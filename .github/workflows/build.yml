@@ -1,0 +1,31 @@
+# Gera o instalador do RORDENS para Windows (x64) num Windows de verdade e publica como artefato, com o SHA-256.
+# Disparo manual (Actions → "Build" → Run workflow). A assinatura do instalador será acrescentada aqui
+# quando o certificado de assinatura de código existir (segredos do repositório; nunca no código).
+name: Build
+on: workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - run: npm ci
+      - run: npm run dist:win
+      - name: SHA-256 do instalador
+        shell: bash
+        run: |
+          cd dist
+          sha256sum *.exe | tee SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: RORDENS-Windows-x64
+          path: |
+            dist/*.exe
+            dist/SHA256SUMS.txt
+          if-no-files-found: error

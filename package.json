@@ -1,0 +1,47 @@
+{
+  "name": "rordens-desktop",
+  "productName": "RORDENS",
+  "version": "0.1.0",
+  "private": true,
+  "description": "App de desktop do RORDENS For People (Mac e Windows): janela própria com ícone no Dock e na barra de tarefas.",
+  "author": "RORDENS <contact@rordens.ai>",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist:mac": "electron-builder --mac dmg --arm64",
+    "dist:win": "electron-builder --win nsis --x64"
+  },
+  "build": {
+    "appId": "ai.rordens.desktop",
+    "productName": "RORDENS",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "package.json",
+      "assets/icon.png"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "icon": "build/icon.png",
+      "identity": null
+    },
+    "win": {
+      "icon": "build/icon.png",
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  },
+  "devDependencies": {
+    "electron": "45.1.0",
+    "electron-builder": "26.18.0"
+  }
+}
